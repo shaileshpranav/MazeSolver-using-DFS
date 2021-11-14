@@ -84,8 +84,6 @@ void Mouse::turn_right()
     }
 }
 
-std::vector <std::array<int,2>>v;
-std::stack <std::array<int,2>>s;
 
 // bool Mouse::cmp(int x, int y)
 // {
@@ -100,15 +98,18 @@ std::stack <std::array<int,2>>s;
 //     // std::cout<<s.top();
 // }
 
-bool Mouse::find_v(std::array<int,2> temp)
+bool Mouse::find_v(int x, int y)
 {
+    std::array <int,2> temp = {x,y};
+    int i = 0;
     if(std::find(v.begin(),v.end(),temp)==v.end())
     {
+        i = 1;
         return false;
-        std::cout<<"false";
     }
     else
     {
+        i=2;
         return true;
     }
 }
@@ -120,7 +121,6 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         if(s.empty())
         {
             s.push(n);
-            std::cout<<"s.empty";
         }
     }
     else
@@ -128,28 +128,29 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         return true;
     }
 
-    if(find_v(n))
+    if(!find_v(n[0],n[1]))
     {
+        int t = 0;
         v.push_back(n);
-        std::cout<<"not visited";
+        t = 1;
     }
 
-    if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::NORTH) && !find_v(n))
+    if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::NORTH) && !find_v(n[0],n[1]+1))
     {
         s.push(n);
         n[1]++;
     }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::EAST) && !find_v(n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::EAST) && !find_v(n[0]+1,n[1]))
     {
         s.push(n);
         n[0]++;
     }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::SOUTH) && !find_v(n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::SOUTH) && !find_v(n[0],n[1]-1))
     {
         s.push(n);
         n[1]--;
     }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::WEST) && !find_v(n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::WEST) && !find_v(n[0]-1,n[1]))
     {
         s.push(n);
         n[0]--;
@@ -159,12 +160,10 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         if(!s.empty())
         {
             s.pop();
-            std::cout<<"s.pop";
         }
         else
         {
             return false;
-            std::cout<<"s. no pop";
         }
     }
     if(!s.empty())
