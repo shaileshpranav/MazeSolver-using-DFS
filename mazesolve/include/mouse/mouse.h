@@ -96,10 +96,12 @@ namespace rwa2 {
          *
          */
         void turn_right();
+        // void cmp(int, int);
         
         int ret_m_x();
         int ret_m_y();
         int ret_m_dir();
+        std::stack <std::array<int,2>> sol();
 
 
 
@@ -110,6 +112,7 @@ namespace rwa2 {
         int m_y; //y position of the robot in the maze
         int m_direction; //direction of the robot in the maze
         std::array<std::array<Node, m_maze_width>, m_maze_height> m_maze; //2D array maze object
+
     };
 }
 #endif

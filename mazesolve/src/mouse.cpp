@@ -44,14 +44,58 @@ void Mouse::move_forward()
 void Mouse::turn_left()
 {
     API::turnLeft();
+    switch (m_direction)
+    {
+    case NORTH:
+        m_direction = WEST;
+        break;
+    case EAST:
+        m_direction = NORTH;
+        break;
+    case SOUTH:
+        m_direction = EAST;
+        break;
+    case WEST:
+        m_direction = SOUTH;
+        break;
+    default:
+        break;
+    }
 }
 void Mouse::turn_right()
 {
     API::turnRight();
+    switch (m_direction)
+    {
+    case NORTH:
+        m_direction = EAST;
+        break;
+    case EAST:
+        m_direction = SOUTH;
+        break;
+    case SOUTH:
+        m_direction = WEST;
+        break;
+    case WEST:
+        m_direction = NORTH;
+        break;
+    default:
+        break;
+    }
 }
 
 std::vector <std::array<int,2>>v;
 std::stack <std::array<int,2>>s;
+
+// void Mouse::cmp(int x, int y)
+// {
+//     // std::array<int,2> temp[] = {s.top()};
+//     // if(temp[0]==x && temp[1]==y)
+//     // {
+//     //     return true;
+//     // }
+//     std::cout<<s.top();
+// }
 
 bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
 {
@@ -75,26 +119,26 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         v.push_back(n);
         std::cout<<"findv";
     }
-    
-    if(!m_maze.at(n_x).at(n_y).is_wall(direction::NORTH))
+
+    if(!m_maze.at(n_x).at(n_y).is_wall(direction::NORTH) && !(s.top()==n))
     {
         s.push(n);
         n_y++;
         n[1]=n_y;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::EAST))
+    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::EAST) && !(s.top()==n))
     {
         s.push(n);
         n_x++;
         n[0]=n_x;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::SOUTH))
+    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::SOUTH) && !(s.top()==n))
     {
         s.push(n);
         n_y--;
         n[1]=n_y;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::WEST))
+    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::WEST) && !(s.top()==n))
     {
         s.push(n);
         n_x--;
@@ -116,7 +160,7 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
     if(!s.empty())
     {
         search_maze(n,s.top());
-        std::cout<<"Going in loop";
+        
     }
     else
     {
@@ -132,6 +176,11 @@ int Mouse::ret_m_y(){
 }
 int Mouse::ret_m_dir(){
     return m_direction;
+}
+
+std::stack <std::array<int,2>> Mouse::sol()
+{
+return s;
 }
 
 } // namespace rwa2;

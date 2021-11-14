@@ -17,12 +17,27 @@ int main() {
 		std::array<int,2>  goal_pos = {8,8};
 		int curr_mou_dir = mouse.ret_m_dir();
 		mouse.search_maze(curr_mou_pos,goal_pos);
+		// mouse.cmp(1,2);
 		if (!mouse.search_maze(curr_mou_pos,goal_pos))
 		{
 			std::cout<<"No Path Found";
-			break;
+			// break;
 		}
-	
+		std::stack <std::array<int,2>>sol_path;
+		sol_path = mouse.sol();
+		// for(int i=0;i<=sol_path.size();i++)
+		// {	
+			std::array<int,2> x {sol_path.top()};
+			std::cout<<x[0]<<'\t'<<x[1];
+		// 	sol_path.pop();
+		// }
+		// while(curr_mou_pos==sol_path.top())
+		// {
+		// 	if(curr_mou_pos[])
+		// 	{
+
+		// 	}
+		// }
 	}
 
 }
