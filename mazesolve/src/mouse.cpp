@@ -87,20 +87,34 @@ void Mouse::turn_right()
 std::vector <std::array<int,2>>v;
 std::stack <std::array<int,2>>s;
 
-// void Mouse::cmp(int x, int y)
+// bool Mouse::cmp(int x, int y)
 // {
-//     // std::array<int,2> temp[] = {s.top()};
-//     // if(temp[0]==x && temp[1]==y)
-//     // {
-//     //     return true;
-//     // }
-//     std::cout<<s.top();
+//     std::array<int,2> temp[] = {s.top()};
+//     if(temp[0][0]==x && temp[0][1]==y)
+//     {
+//         return true;
+//         std::cout<<temp;
+//     }
+//     else
+//         return false;
+//     // std::cout<<s.top();
 // }
+
+bool Mouse::find_v(std::array<int,2> temp)
+{
+    if(std::find(v.begin(),v.end(),temp)==v.end())
+    {
+        return false;
+        std::cout<<"false";
+    }
+    else
+    {
+        return true;
+    }
+}
 
 bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
 {
-    int n_x = n[0];
-    int n_y = n[1]; 
     if(n!=g)
     {
         if(s.empty())
@@ -114,35 +128,31 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         return true;
     }
 
-    if(std::find(v.begin(),v.end(),n)==v.end())
+    if(find_v(n))
     {
         v.push_back(n);
-        std::cout<<"findv";
+        std::cout<<"not visited";
     }
 
-    if(!m_maze.at(n_x).at(n_y).is_wall(direction::NORTH) && !(s.top()==n))
+    if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::NORTH) && !find_v(n))
     {
         s.push(n);
-        n_y++;
-        n[1]=n_y;
+        n[1]++;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::EAST) && !(s.top()==n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::EAST) && !find_v(n))
     {
         s.push(n);
-        n_x++;
-        n[0]=n_x;
+        n[0]++;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::SOUTH) && !(s.top()==n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::SOUTH) && !find_v(n))
     {
         s.push(n);
-        n_y--;
-        n[1]=n_y;
+        n[1]--;
     }
-    else if(!m_maze.at(n_x).at(n_y).is_wall(direction::WEST) && !(s.top()==n))
+    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::WEST) && !find_v(n))
     {
         s.push(n);
-        n_x--;
-        n[0]=n_x;
+        n[0]--;
     }
     else
     {
@@ -159,6 +169,7 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
     }
     if(!s.empty())
     {
+
         search_maze(n,s.top());
         
     }

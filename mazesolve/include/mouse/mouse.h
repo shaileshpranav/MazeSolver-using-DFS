@@ -96,7 +96,7 @@ namespace rwa2 {
          *
          */
         void turn_right();
-        // void cmp(int, int);
+        bool find_v(std::array<int,2>);
         
         int ret_m_x();
         int ret_m_y();
