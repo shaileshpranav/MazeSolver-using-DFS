@@ -85,19 +85,6 @@ void Mouse::turn_right()
 }
 
 
-// bool Mouse::cmp(int x, int y)
-// {
-//     std::array<int,2> temp[] = {s.top()};
-//     if(temp[0][0]==x && temp[0][1]==y)
-//     {
-//         return true;
-//         std::cout<<temp;
-//     }
-//     else
-//         return false;
-//     // std::cout<<s.top();
-// }
-
 bool Mouse::find_v(int x, int y)
 {
     std::array <int,2> temp = {x,y};

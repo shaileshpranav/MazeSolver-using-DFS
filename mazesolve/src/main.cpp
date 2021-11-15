@@ -24,9 +24,102 @@ int main() {
 		}
 		std::stack <std::array<int,2>>sol_path;
 		sol_path = mouse.sol();
-
-		
-
+		while(!sol_path.empty())
+		{
+			std::array <int,2> path = sol_path.top();
+			if(curr_mou_dir == 0)
+			{
+				if(path[1]==curr_mou_pos[1]+1)
+				{
+					API::moveForward();
+				}
+				else if(path[0]==curr_mou_pos[0]+1)
+				{
+					API::turnRight();
+					API::moveForward();
+				}
+				else if(path[1]==curr_mou_pos[1]-1)
+				{
+					API::turnRight();
+					API::turnRight();
+					API::moveForward();
+				}
+				else
+				{
+					API::turnLeft();
+					API::moveForward();
+				}
+			}
+			else if(curr_mou_dir == 1)
+			{
+				if(path[0]==curr_mou_pos[0]+1)
+				{
+					API::moveForward();
+				}
+				else if(path[1]==curr_mou_pos[1]+1)
+				{
+					API::turnLeft();
+					API::moveForward();
+				}
+				else if(path[0]==curr_mou_pos[0]-1)
+				{
+					API::turnRight();
+					API::turnRight();
+					API::moveForward();
+				}
+				else
+				{
+					API::turnRight();
+					API::moveForward();
+				}
+			}
+			else if(curr_mou_dir == 2)
+			{
+				if(path[1]==curr_mou_pos[1]-1)
+				{
+					API::moveForward();
+				}
+				else if(path[0]==curr_mou_pos[0]+1)
+				{
+					API::turnLeft();
+					API::moveForward();
+				}
+				else if(path[1]==curr_mou_pos[1]+1)
+				{
+					API::turnRight();
+					API::turnRight();
+					API::moveForward();
+				}
+				else
+				{
+					API::turnRight();
+					API::moveForward();
+				}
+			}
+			else
+			{
+				if(path[0]==curr_mou_pos[0]-1)
+				{
+					API::moveForward();
+				}
+				else if(path[1]==curr_mou_pos[1]-1)
+				{
+					API::turnLeft();
+					API::moveForward();
+				}
+				else if(path[0]==curr_mou_pos[0]+1)
+				{
+					API::turnRight();
+					API::turnRight();
+					API::moveForward();
+				}
+				else
+				{
+					API::turnRight();
+					API::moveForward();
+				}
+			}
+		}
 	}
 
 }
