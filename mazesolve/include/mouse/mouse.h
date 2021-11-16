@@ -96,9 +96,31 @@ namespace rwa2 {
          *
          */
         void turn_right();
+        /**
+         * @brief Find if the next node has already been visited
+         * 
+         * @return True if Visited
+         * @return False if not visited
+         *
+         */
         bool find_v(int, int);
+        /**
+         * @brief Find the walls in current in specified direction
+         * 
+         * @return True if wall is present
+         * @return False if wall is absent
+         *
+         */
         bool fnd_wall(int);
+        /**
+         * @brief Set and display the walls in the given node
+         * 
+         */
         void wall_set(int, int);
+        /**
+         * @brief Move the mouse in the specified direction along the x-y axis
+         * 
+         */
         void motion(char);
         
         private:
@@ -108,10 +130,8 @@ namespace rwa2 {
         int m_y; //y position of the robot in the maze
         int m_direction; //direction of the robot in the maze
         std::array<std::array<Node, m_maze_width>, m_maze_height> m_maze; //2D array maze object
-        std::vector <std::array<int,2>>v{};
-        std::vector <std::array<int,2>>dv{};
-        std::stack <std::array<int,2>>s{};
-
+        std::vector <std::array<int,2>>v{};  //vector containing the xy coordinates of visited nodes
+        std::stack <std::array<int,2>>s{};  //stack containing the xy coordinates of the solution path
     };
 }
 #endif

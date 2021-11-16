@@ -8,20 +8,16 @@ int main() {
 	rwa2::Mouse mouse;
 	mouse.display_walls();
 
-	// while(true)
-	// {
-		API::clearAllColor();
-		API::setColor(8,8,'g');
-		API::setText(8,8,"G");
-		std::array<int,2> curr_mou_pos = {0,0};
-		std::array<int,2>  goal_pos = {8,8};
-		bool solution = mouse.search_maze(curr_mou_pos,goal_pos);
-		if (!solution)
-		{
-			std::cout<<"No Path Found";
-			// break;
-		}
-	// }
+	API::clearAllColor();						//Reset the colour
+	API::setColor(8,8,'g');						//Set the colour for goal node
+	API::setText(8,8,"G");						//Set the text for goal node
+	std::array<int,2> curr_mou_pos = {0,0}; 	//Initial position
+	std::array<int,2>  goal_pos = {8,8};		//Goal position
+	bool solution = mouse.search_maze(curr_mou_pos,goal_pos);
+	if (!solution)
+	{
+		std::cout<<"No Path Found";				//If no solution found
+	}
 	return 0;
 }
 

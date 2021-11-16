@@ -37,73 +37,56 @@ void Mouse::display_walls() {
         }
     }
 }
-void Mouse::wall_set(int x, int y)
+void Mouse::move_forward()
 {
-    if(m_direction==0)
+    API::moveForward(1);
+}
+void Mouse::turn_left()
+{
+    API::turnLeft();
+    switch (m_direction)    //for changing the value of direction of the mouse
     {
-        if(API::wallFront())
-        {
-            API::setWall(x,y,'n');
-        }
-        if(API::wallRight())
-        {
-            API::setWall(x,y,'e');
-        }
-        if(API::wallLeft())
-        {
-            API::setWall(x,y,'w');
-        }
+    case NORTH:
+        m_direction = WEST;
+        break;
+    case EAST:
+        m_direction = NORTH;
+        break;
+    case SOUTH:
+        m_direction = EAST;
+        break;
+    case WEST:
+        m_direction = SOUTH;
+        break;
+    default:
+        break;
     }
-    if(m_direction==1)
+}
+void Mouse::turn_right()
+{
+    API::turnRight();
+    switch (m_direction)    //for changing the value of direction of the mouse
     {
-        if(API::wallFront())
-        {
-            API::setWall(x,y,'e');
-        }
-        if(API::wallRight())
-        {
-            API::setWall(x,y,'s');
-        }
-        if(API::wallLeft())
-        {
-            API::setWall(x,y,'n');
-        }
-    }
-    if(m_direction==2)
-    {
-        if(API::wallFront())
-        {
-            API::setWall(x,y,'s');
-        }
-        if(API::wallRight())
-        {
-            API::setWall(x,y,'w');
-        }
-        if(API::wallLeft())
-        {
-            API::setWall(x,y,'e');
-        }
-    }
-    if(m_direction==3)
-    {
-        if(API::wallFront())
-        {
-            API::setWall(x,y,'w');
-        }
-        if(API::wallRight())
-        {
-            API::setWall(x,y,'n');
-        }
-        if(API::wallLeft())
-        {
-            API::setWall(x,y,'s');
-        }
+    case NORTH:
+        m_direction = EAST;
+        break;
+    case EAST:
+        m_direction = SOUTH;
+        break;
+    case SOUTH:
+        m_direction = WEST;
+        break;
+    case WEST:
+        m_direction = NORTH;
+        break;
+    default:
+        break;
     }
 }
 bool Mouse::fnd_wall(int m_dir)
 {   
     bool wall = false;
-    if(m_direction==0)
+    if(m_direction==0)      //when the mouse is facing NORTH
     {
         switch (m_dir)
         {
@@ -125,7 +108,7 @@ bool Mouse::fnd_wall(int m_dir)
             break;
         }
     }
-    if(m_direction==1)
+    if(m_direction==1)      //when the mouse is facing EAST
     {
         switch (m_dir)
         {
@@ -147,7 +130,7 @@ bool Mouse::fnd_wall(int m_dir)
             break;
         }
     }
-        if(m_direction==2)
+        if(m_direction==2)      //when the mouse is facing SOUTH
     {
         switch (m_dir)
         {
@@ -169,7 +152,7 @@ bool Mouse::fnd_wall(int m_dir)
             break;
         }
     }
-        if(m_direction==3)
+        if(m_direction==3)      //when the mouse is facing WEST
     {
         switch (m_dir)
         {
@@ -195,57 +178,88 @@ bool Mouse::fnd_wall(int m_dir)
     std::cerr << "\n";
     return wall;
 }
-void Mouse::move_forward()
+void Mouse::wall_set(int x, int y)
 {
-    API::moveForward(1);
-}
-void Mouse::turn_left()
-{
-    API::turnLeft();
-    switch (m_direction)
+    if(m_direction==0)
     {
-    case NORTH:
-        m_direction = WEST;
-        break;
-    case EAST:
-        m_direction = NORTH;
-        break;
-    case SOUTH:
-        m_direction = EAST;
-        break;
-    case WEST:
-        m_direction = SOUTH;
-        break;
-    default:
-        break;
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'n');      //displays the wall in the simulator
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'e');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'w');
+        }
+    }
+    if(m_direction==1)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'e');      //displays the wall in the simulator
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'s');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'n');
+        }
+    }
+    if(m_direction==2)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'s');      //displays the wall in the simulator
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'w');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'e');
+        }
+    }
+    if(m_direction==3)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'w');      //displays the wall in the simulator
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'n');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'s');
+        }
     }
 }
-void Mouse::turn_right()
+
+bool Mouse::find_v(int x, int y)
 {
-    API::turnRight();
-    switch (m_direction)
+    std::array <int,2> temp = {x,y};
+    if(std::find(v.begin(),v.end(),temp)!=v.end())     
     {
-    case NORTH:
-        m_direction = EAST;
-        break;
-    case EAST:
-        m_direction = SOUTH;
-        break;
-    case SOUTH:
-        m_direction = WEST;
-        break;
-    case WEST:
-        m_direction = NORTH;
-        break;
-    default:
-        break;
+        return true;        //Visited
+    }
+    else
+    {
+        return false;       //Not visited
     }
 }
+
 
 
 void Mouse::motion(char xy)
 {
-    if(xy == 'u')
+    if(xy == 'n')
     {
         switch(m_direction)
         {
@@ -267,7 +281,7 @@ void Mouse::motion(char xy)
                 break;
         }
     }
-    if(xy == 'r')
+    if(xy == 'e')
     {
         switch(m_direction)
         {
@@ -290,7 +304,7 @@ void Mouse::motion(char xy)
 
         }
     }
-    if(xy == 'd')
+    if(xy == 's')
     {
         switch(m_direction)
         {
@@ -312,7 +326,7 @@ void Mouse::motion(char xy)
                 break;
         }
     }
-    if(xy == 'l')
+    if(xy == 'w')
     {
         switch(m_direction)
         {
@@ -336,25 +350,11 @@ void Mouse::motion(char xy)
     }
 }
 
-
-bool Mouse::find_v(int x, int y)
-{
-    std::array <int,2> temp = {x,y};
-    if(std::find(v.begin(),v.end(),temp)!=v.end())
-    {
-        return true;        //Visited
-    }
-    else
-    {
-        return false;       //Not visited
-    }
-}
 
 bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
 {
-    wall_set(n[0],n[1]);
-    std::cerr<<n[0]<<'\t'<<n[1]<<'\t';
-    if(!(n[0]==g[0] && n[1]==g[1]))
+    wall_set(n[0],n[1]);                //sets the walls in the current node
+    if(!(n[0]==g[0] && n[1]==g[1]))     //to check if goal is reached
     {
         if(s.empty())
         {
@@ -367,69 +367,64 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         return true;
     }
 
-    if(!find_v(n[0],n[1]))
+    if(!find_v(n[0],n[1]))          //if not visited update the visited vector
     {
         v.push_back(n);
     }
     
-    if(!fnd_wall(NORTH) && !find_v(n[0],n[1]+1))
+    if(!fnd_wall(NORTH) && !find_v(n[0],n[1]+1))    //check if North is valid
     {  
         API::setColor(n[0],n[1],'w');
         n[1]++;
         s.push(n);
-        Mouse::motion('u');
+        Mouse::motion('n');
     }
-    else if(!fnd_wall(EAST) && !find_v(n[0]+1,n[1]))
+    else if(!fnd_wall(EAST) && !find_v(n[0]+1,n[1]))        //check if East is valid
     {
         API::setColor(n[0],n[1],'w');
         n[0]++;
         s.push(n);        
-        Mouse::motion('r');
+        Mouse::motion('e');
     }
-    else if(!fnd_wall(SOUTH) && !find_v(n[0],n[1]-1))
+    else if(!fnd_wall(SOUTH) && !find_v(n[0],n[1]-1))       //check if South is valid
     {
         API::setColor(n[0],n[1],'w');
         n[1]--;
         s.push(n);
-        Mouse::motion('d');
+        Mouse::motion('s');
     }
-    else if(!fnd_wall(WEST) && !find_v(n[0]-1,n[1]))
+    else if(!fnd_wall(WEST) && !find_v(n[0]-1,n[1]))        //check if West is valid
     {
         API::setColor(n[0],n[1],'w');
         n[0]--;
         s.push(n);
-        Mouse::motion('l');
+        Mouse::motion('w');
     }
     else
     {
-        if(!s.empty())
+        if(!s.empty())                      //Backtrack
         {
             API::clearColor(n[0],n[1]);
             std::cerr<<"Bactrack"<<'\n';
-            std::array<int,2> t2 = s.top();
-            std::cerr<<'\n'<<t2[0]<<'\t'<<t2[1]<<'\n';
             s.pop();
+
             std::array<int,2> t1;
             t1=s.top();
-            if(n[1]+1 == t1[1])
+            if(n[1]+1 == t1[1])             //Move the mouse to previous node
             {
-                std::cerr<<"up";
-                Mouse::motion('u');
+                Mouse::motion('n');
             }
             if(n[0]+1 == t1[0])
             {
-                std::cerr<<"right";
-                Mouse::motion('r');
+                Mouse::motion('e');
             }
             if(n[1]-1 == t1[1])
             {
-                std::cerr<<"down";
-                Mouse::motion('d');
+                Mouse::motion('s');
             }
             if(n[0]-1 == t1[0])
             {
-                std::cerr<<"left";
-                Mouse::motion('l');
+                Mouse::motion('w');
             }
         }
         else
@@ -441,7 +436,7 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
     {
         n=s.top();
         std::cerr<<'\n'<<n[0]<<'\t'<<n[1]<<'\n';
-        search_maze(n,g);
+        search_maze(n,g);                          //Loop till goal is reached
     }
     else
     {
