@@ -78,8 +78,6 @@ namespace rwa2 {
          * @return false A path is not found
          */
         bool search_maze(std::array<int,2>,std::array<int,2>);
-
-        bool search_maze();
         /**
          * @brief Make the mouse move forward
          *

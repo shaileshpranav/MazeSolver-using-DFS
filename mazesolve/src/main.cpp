@@ -1,3 +1,13 @@
+/**
+ * @file main.cpp
+ * @author Shailesh Pranav Rajendran (spraj@umd.edu), Harika Pendli (hpendli@umd.edu), Viswanath Datla (vdatla@umd.edu)
+ * @brief The main file for the micromouse maze solver
+ * @version 0.1
+ * @date 2021-11-16
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <iostream>
 #include <array>
 #include <algorithm>

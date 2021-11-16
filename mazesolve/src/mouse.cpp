@@ -8,9 +8,8 @@
 #include <stack>
 #include <iostream>
 
-namespace rwa2
-{
-void Mouse::display_walls() {
+
+void rwa2::Mouse::display_walls() {
     for (int x = 0; x < m_maze_width; x += 1) {
         for (int y = 0; y < m_maze_height; y += 1) {
             if (m_maze.at(x).at(y).is_wall(direction::NORTH)) {
@@ -37,11 +36,11 @@ void Mouse::display_walls() {
         }
     }
 }
-void Mouse::move_forward()
+void rwa2::Mouse::move_forward()
 {
     API::moveForward(1);
 }
-void Mouse::turn_left()
+void rwa2::Mouse::turn_left()
 {
     API::turnLeft();
     switch (m_direction)    //for changing the value of direction of the mouse
@@ -62,7 +61,7 @@ void Mouse::turn_left()
         break;
     }
 }
-void Mouse::turn_right()
+void rwa2::Mouse::turn_right()
 {
     API::turnRight();
     switch (m_direction)    //for changing the value of direction of the mouse
@@ -83,7 +82,7 @@ void Mouse::turn_right()
         break;
     }
 }
-bool Mouse::fnd_wall(int m_dir)
+bool rwa2::Mouse::fnd_wall(int m_dir)
 {   
     bool wall = false;
     if(m_direction==0)      //when the mouse is facing NORTH
@@ -178,7 +177,7 @@ bool Mouse::fnd_wall(int m_dir)
     std::cerr << "\n";
     return wall;
 }
-void Mouse::wall_set(int x, int y)
+void rwa2::Mouse::wall_set(int x, int y)
 {
     if(m_direction==0)
     {
@@ -242,7 +241,7 @@ void Mouse::wall_set(int x, int y)
     }
 }
 
-bool Mouse::find_v(int x, int y)
+bool rwa2::Mouse::find_v(int x, int y)
 {
     std::array <int,2> temp = {x,y};
     if(std::find(v.begin(),v.end(),temp)!=v.end())     
@@ -257,7 +256,7 @@ bool Mouse::find_v(int x, int y)
 
 
 
-void Mouse::motion(char xy)
+void rwa2::Mouse::motion(char xy)
 {
     if(xy == 'n')
     {
@@ -351,7 +350,7 @@ void Mouse::motion(char xy)
 }
 
 
-bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
+bool rwa2::Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
 {
     wall_set(n[0],n[1]);                //sets the walls in the current node
     if(!(n[0]==g[0] && n[1]==g[1]))     //to check if goal is reached
@@ -377,28 +376,28 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         API::setColor(n[0],n[1],'w');
         n[1]++;
         s.push(n);
-        Mouse::motion('n');
+        rwa2::Mouse::motion('n');
     }
     else if(!fnd_wall(EAST) && !find_v(n[0]+1,n[1]))        //check if East is valid
     {
         API::setColor(n[0],n[1],'w');
         n[0]++;
         s.push(n);        
-        Mouse::motion('e');
+        rwa2::Mouse::motion('e');
     }
     else if(!fnd_wall(SOUTH) && !find_v(n[0],n[1]-1))       //check if South is valid
     {
         API::setColor(n[0],n[1],'w');
         n[1]--;
         s.push(n);
-        Mouse::motion('s');
+        rwa2::Mouse::motion('s');
     }
     else if(!fnd_wall(WEST) && !find_v(n[0]-1,n[1]))        //check if West is valid
     {
         API::setColor(n[0],n[1],'w');
         n[0]--;
         s.push(n);
-        Mouse::motion('w');
+        rwa2::Mouse::motion('w');
     }
     else
     {
@@ -412,19 +411,19 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
             t1=s.top();
             if(n[1]+1 == t1[1])             //Move the mouse to previous node
             {
-                Mouse::motion('n');
+                rwa2::Mouse::motion('n');
             }
             if(n[0]+1 == t1[0])
             {
-                Mouse::motion('e');
+                rwa2::Mouse::motion('e');
             }
             if(n[1]-1 == t1[1])
             {
-                Mouse::motion('s');
+                rwa2::Mouse::motion('s');
             }
             if(n[0]-1 == t1[0])
             {
-                Mouse::motion('w');
+                rwa2::Mouse::motion('w');
             }
         }
         else
@@ -443,6 +442,4 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
         return false;
     }
 }
-
-} // namespace rwa2;
 
