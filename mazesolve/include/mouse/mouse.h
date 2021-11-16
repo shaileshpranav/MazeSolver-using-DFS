@@ -97,14 +97,10 @@ namespace rwa2 {
          */
         void turn_right();
         bool find_v(int, int);
+        bool fnd_wall(int);
+        void wall_set(int, int);
+        void motion(char);
         
-        int ret_m_x();
-        int ret_m_y();
-        int ret_m_dir();
-        std::stack <std::array<int,2>> sol();
-
-
-
         private:
         static const int m_maze_width{ 16 }; //width of the maze
         static const int m_maze_height{ 16 };//height of the maze
@@ -112,8 +108,9 @@ namespace rwa2 {
         int m_y; //y position of the robot in the maze
         int m_direction; //direction of the robot in the maze
         std::array<std::array<Node, m_maze_width>, m_maze_height> m_maze; //2D array maze object
-        std::vector <std::array<int,2>>v;
-        std::stack <std::array<int,2>>s;
+        std::vector <std::array<int,2>>v{};
+        std::vector <std::array<int,2>>dv{};
+        std::stack <std::array<int,2>>s{};
 
     };
 }

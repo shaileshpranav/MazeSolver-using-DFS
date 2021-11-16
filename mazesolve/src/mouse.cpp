@@ -37,9 +37,167 @@ void Mouse::display_walls() {
         }
     }
 }
+void Mouse::wall_set(int x, int y)
+{
+    if(m_direction==0)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'n');
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'e');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'w');
+        }
+    }
+    if(m_direction==1)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'e');
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'s');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'n');
+        }
+    }
+    if(m_direction==2)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'s');
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'w');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'e');
+        }
+    }
+    if(m_direction==3)
+    {
+        if(API::wallFront())
+        {
+            API::setWall(x,y,'w');
+        }
+        if(API::wallRight())
+        {
+            API::setWall(x,y,'n');
+        }
+        if(API::wallLeft())
+        {
+            API::setWall(x,y,'s');
+        }
+    }
+}
+bool Mouse::fnd_wall(int m_dir)
+{   
+    bool wall = false;
+    if(m_direction==0)
+    {
+        switch (m_dir)
+        {
+        case 0:
+            wall = API::wallFront();
+            break;
+        case 1:
+            wall = API::wallRight();
+            break;
+        case 2:
+            API::turnRight();
+            wall = API::wallRight();
+            API::turnLeft();
+            break;
+        case 3:
+            wall = API::wallLeft();
+            break;
+        default:
+            break;
+        }
+    }
+    if(m_direction==1)
+    {
+        switch (m_dir)
+        {
+        case 0:
+            wall = API::wallLeft();
+            break;
+        case 1:
+            wall = API::wallFront();
+            break;
+        case 2:
+            wall = API::wallRight();
+            break;
+        case 3:
+            API::turnRight();
+            wall = API::wallRight();
+            API::turnLeft();
+            break;
+        default:
+            break;
+        }
+    }
+        if(m_direction==2)
+    {
+        switch (m_dir)
+        {
+        case 0:
+            turn_right();
+            wall = API::wallRight();
+            turn_left();
+            break;
+        case 1:
+            wall = API::wallLeft();
+            break;
+        case 2:
+            wall = API::wallFront();
+            break;
+        case 3:
+            wall = API::wallRight();
+            break;
+        default:
+            break;
+        }
+    }
+        if(m_direction==3)
+    {
+        switch (m_dir)
+        {
+        case 0:
+            wall = API::wallRight();
+            break;
+        case 1:
+            API::turnRight();
+            wall = API::wallRight();
+            API::turnLeft();
+            break;
+        case 2:
+            wall = API::wallLeft();
+            break;
+        case 3:
+            wall = API::wallFront();
+            break;
+        default:
+            break;
+        }
+    }
+    API::setColor(m_x,m_y,'w');
+    std::cerr << "\n";
+    return wall;
+}
 void Mouse::move_forward()
 {
-    API::moveForward();
+    API::moveForward(1);
 }
 void Mouse::turn_left()
 {
@@ -85,25 +243,118 @@ void Mouse::turn_right()
 }
 
 
+void Mouse::motion(char xy)
+{
+    if(xy == 'u')
+    {
+        switch(m_direction)
+        {
+            case 0:
+                move_forward();
+                break;
+            case 1:
+                turn_left();
+                move_forward();
+                break;
+            case 2:
+                turn_left();
+                turn_left();
+                move_forward();
+                break;
+            case 3:
+                turn_right();
+                move_forward();
+                break;
+        }
+    }
+    if(xy == 'r')
+    {
+        switch(m_direction)
+        {
+            case 0:
+                turn_right();
+                move_forward();
+                break;
+            case 1:
+                move_forward();
+                break;
+            case 2:
+                turn_left();
+                move_forward();
+                break;
+            case 3:
+                turn_left();
+                turn_left();
+                move_forward();
+            break;
+
+        }
+    }
+    if(xy == 'd')
+    {
+        switch(m_direction)
+        {
+            case 1:
+                turn_right();
+                move_forward();
+                break;
+            case 2:
+                move_forward();
+                break;
+            case 3:
+                turn_left();
+                move_forward();
+                break;
+            case 0:
+                turn_left();
+                turn_left();
+                move_forward();
+                break;
+        }
+    }
+    if(xy == 'l')
+    {
+        switch(m_direction)
+        {
+            case 0:
+                turn_left();
+                move_forward();
+                break;
+            case 1:
+                turn_right();
+                turn_right();
+                move_forward();
+                break;
+            case 2:
+                turn_right();
+                move_forward();
+                break;
+            case 3:
+                move_forward();
+                break;
+        }
+    }
+}
+
+
 bool Mouse::find_v(int x, int y)
 {
     std::array <int,2> temp = {x,y};
-    int i = 0;
-    if(std::find(v.begin(),v.end(),temp)==v.end())
+    if(std::find(v.begin(),v.end(),temp)!=v.end())
     {
-        i = 1;
-        return false;
+        return true;        //Visited
     }
     else
     {
-        i=2;
-        return true;
+        return false;       //Not visited
     }
 }
 
 bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
 {
-    if(n!=g)
+    wall_set(n[0],n[1]);
+    std::cerr<<n[0]<<'\t'<<n[1]<<'\t';
+    if(!(n[0]==g[0] && n[1]==g[1]))
     {
         if(s.empty())
         {
@@ -112,41 +363,74 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
     }
     else
     {
+        std::cerr<<'\n'<<"Goal reached"<<'\n';
         return true;
     }
 
     if(!find_v(n[0],n[1]))
     {
-        int t = 0;
         v.push_back(n);
-        t = 1;
     }
-
-    if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::NORTH) && !find_v(n[0],n[1]+1))
-    {
-        s.push(n);
+    
+    if(!fnd_wall(NORTH) && !find_v(n[0],n[1]+1))
+    {  
+        API::setColor(n[0],n[1],'w');
         n[1]++;
-    }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::EAST) && !find_v(n[0]+1,n[1]))
-    {
         s.push(n);
+        Mouse::motion('u');
+    }
+    else if(!fnd_wall(EAST) && !find_v(n[0]+1,n[1]))
+    {
+        API::setColor(n[0],n[1],'w');
         n[0]++;
+        s.push(n);        
+        Mouse::motion('r');
     }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::SOUTH) && !find_v(n[0],n[1]-1))
+    else if(!fnd_wall(SOUTH) && !find_v(n[0],n[1]-1))
     {
-        s.push(n);
+        API::setColor(n[0],n[1],'w');
         n[1]--;
-    }
-    else if(!m_maze.at(n[0]).at(n[1]).is_wall(direction::WEST) && !find_v(n[0]-1,n[1]))
-    {
         s.push(n);
+        Mouse::motion('d');
+    }
+    else if(!fnd_wall(WEST) && !find_v(n[0]-1,n[1]))
+    {
+        API::setColor(n[0],n[1],'w');
         n[0]--;
+        s.push(n);
+        Mouse::motion('l');
     }
     else
     {
         if(!s.empty())
         {
+            API::clearColor(n[0],n[1]);
+            std::cerr<<"Bactrack"<<'\n';
+            std::array<int,2> t2 = s.top();
+            std::cerr<<'\n'<<t2[0]<<'\t'<<t2[1]<<'\n';
             s.pop();
+            std::array<int,2> t1;
+            t1=s.top();
+            if(n[1]+1 == t1[1])
+            {
+                std::cerr<<"up";
+                Mouse::motion('u');
+            }
+            if(n[0]+1 == t1[0])
+            {
+                std::cerr<<"right";
+                Mouse::motion('r');
+            }
+            if(n[1]-1 == t1[1])
+            {
+                std::cerr<<"down";
+                Mouse::motion('d');
+            }
+            if(n[0]-1 == t1[0])
+            {
+                std::cerr<<"left";
+                Mouse::motion('l');
+            }
         }
         else
         {
@@ -155,29 +439,14 @@ bool Mouse::search_maze(std::array<int,2> n, std::array<int,2> g)
     }
     if(!s.empty())
     {
-
-        search_maze(n,s.top());
-        
+        n=s.top();
+        std::cerr<<'\n'<<n[0]<<'\t'<<n[1]<<'\n';
+        search_maze(n,g);
     }
     else
     {
         return false;
     }
-}
-
-int Mouse::ret_m_x(){
-    return m_x;
-}
-int Mouse::ret_m_y(){
-    return m_y;
-}
-int Mouse::ret_m_dir(){
-    return m_direction;
-}
-
-std::stack <std::array<int,2>> Mouse::sol()
-{
-return s;
 }
 
 } // namespace rwa2;
